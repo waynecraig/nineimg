@@ -15,7 +15,7 @@ router.use(function(req, res){
             }
 
         } catch (e) { 
-            console.error(e);
+            console.error(e.stack);
             return res.json({code: 1, msg: 'action error'});
         }
 

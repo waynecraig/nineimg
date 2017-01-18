@@ -1,0 +1,6 @@
+export const SET_LOCAL_ID = 'SET_LOCAL_ID'
+export const SET_SERVER_ID = 'SET_SERVER_ID'
+export const UPLOAD_IMG = 'UPLOAD_IMG'
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+export const RECEIVE_USERS = 'RECEIVE_USERS'
+export const SET_CUR_USER = 'SET_CUR_USER'

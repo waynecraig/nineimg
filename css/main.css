@@ -48,9 +48,16 @@
 .buttons div {
     flex: 1;
     text-align: center;
-    background-color: #ccc;
+    color: #fff;
+    background-color: #3498db;
     margin: 2vw;
     height: 10vh;
     line-height: 10vh;
     font-size: 5vh;
+}
+.buttons div.disable {
+    background-color: #95a5a6;
+}
+.tip {
+    margin: 2vw;
 }

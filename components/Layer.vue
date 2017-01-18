@@ -1,48 +1,17 @@
-var Vue = require('./vue');
+<template>
+    <div class="layer">
+        <div v-for="i in 9" class="cell" v-bind:style="styles[i-1]"></div>
+    </div>
+</template>
 
-Vue.component('matrix', {
-    props: ['layers'],
-    methods: {
-        onPanStart: function(e) {
-            this.$refs.L[0].onPanStart(e);
-        },
-        onPanMove: function(e) {
-            this.$refs.L[0].onPanMove(e);
-        },
-        onPanEnd: function(e) {
-            this.$refs.L[0].onPanEnd(e);
-        },
-        onPinchStart: function(e) {
-            this.$refs.L[0].onPinchStart(e);
-        },
-        onPinchMove: function(e) {
-            this.$refs.L[0].onPinchMove(e);
-        },
-        onPinchEnd: function(e) {
-            this.$refs.L[0].onPinchEnd(e);
-        }
-    },
-    template: `
-        <div 
-            class="matrix"
-            v-touch:panstart="onPanStart"
-            v-touch:panmove="onPanMove"
-            v-touch:panend="onPanEnd"
-            v-touch:pinchstart="onPinchStart"
-            v-touch:pinchmove="onPinchMove"
-            v-touch:pinchend="onPinchEnd"
-        >
-            <layer v-for="img in layers" :img="img" ref="L"/>
-        </div>
-    `
-})
+<script>
 
-Vue.component('layer', {
+const ResMixin = require('./ResMixin.vue');
+module.exports = {
     props: ['img'],
     data: function () {
         this.updateImgSize();
         return {
-            loading: 0,
             w: 0,
             h: 0,
             scale: 1,
@@ -56,7 +25,7 @@ Vue.component('layer', {
         }
     },
     computed: {
-        styles: function() {
+		styles: function() {
             var s = [];
             var d  = this.W / 3;
             var D = d + this.M;
@@ -77,7 +46,7 @@ Vue.component('layer', {
                 });
             }
             return s;
-        },
+        }
     },
     methods: {
         updateImgSize: function() {
@@ -132,10 +101,21 @@ Vue.component('layer', {
         img: function(val, oldVal) {
             this.updateImgSize();
         }
-    },
-    template: `
-        <div class="layer">
-            <div v-for="i in 9" class="cell" v-bind:style="styles[i-1]"></div>
-        </div>
-    `
-})
+    }
+}
+
+</script>
+
+<style>
+.layer {
+    position: absolute;
+}
+.cell {
+    background-repeat: no-repeat;
+    position: absolute;
+}
+.cell img {
+    width: 100%;
+    height: 100%;
+}
+</style>
