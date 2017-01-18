@@ -1,6 +1,6 @@
 <template>
     <div class="list" v-on:scroll="onScroll">
-        <div v-if="posts.length === 0">还没有人发动态~</div>
+        <div class="empty" v-if="posts.length === 0">还没有人发动态~</div>
         <div v-for="post in posts" class="post">
             <img class="avatar" v-bind:src="post.headimgurl" v-on:click="toAlbum(post.userId)"/>
             <div class="postdata">
@@ -129,6 +129,13 @@ module.exports = {
 
 .list .post .time {
     font-size: 12px;
+    color: #666;
+}
+
+.list .empty {
+    line-height: 90vh;
+    font-size: 25px;
+    text-align: center;
     color: #666;
 }
 

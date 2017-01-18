@@ -27,7 +27,7 @@ app.use(compression());
 
 app.set('view engine', 'pug')
 
-app.use(minifyHTML({
+/*app.use(minifyHTML({
     override:      true,
     exception_url: false,
     htmlMinifier: {
@@ -38,7 +38,7 @@ app.use(minifyHTML({
         removeEmptyAttributes:     true,
         minifyJS:                  true
     }
-}));
+}));*/
 
 app.get('/list', page);
 app.get('/album/:id', page);

@@ -4,7 +4,7 @@
             <img v-bind:src="user.headimgurl"/>
             <p>{{user.nickname}}</p>
         </div>
-        <div v-if="posts.length===0">您还没有发动态，快来试试吧~</div>
+        <div class="empty" v-if="posts.length===0">您还没有发动态，快来试试吧~</div>
         <div class="item" v-for="(post,i) in posts">
             <div v-if="shouldShowYear(i)&&shouldShowDate(i)" class="year">
                 {{getYear(post.createTime)}}
@@ -160,6 +160,13 @@ module.exports = {
     margin: 0 5px;
     color: #666;
     font-size: 12px;
+}
+
+.album .empty {
+    line-height: 70vh;
+    font-size: 20px;
+    text-align: center;
+    color: #666;
 }
 
 </style>
