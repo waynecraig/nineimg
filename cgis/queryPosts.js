@@ -10,7 +10,9 @@ module.exports = function(req, res) {
     const userIds = body.userIds || [];
 
     const success = posts => {
-        const ids = Array.from(new Set(posts.map(d=>d.userId))).filter(d=>!~userIds.indexOf(d));
+        const ids = Array.from(new Set(
+            posts.map(d=>d.userId).concat(userId ? [userId] : [])
+        )).filter(d=>!~userIds.indexOf(d));
         return db.getUsers(ids).then(users => {
             res.json({
                 code: 0, 
