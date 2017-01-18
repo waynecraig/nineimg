@@ -10,6 +10,7 @@ const app = express();
 const minifyHTML = require('express-minify-html');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const http = require('http');
 const https = require('https');
@@ -22,9 +23,11 @@ app.use('/img', express.static('./img'));
 app.use('/data', express.static('./data'));
 app.use('/cgi-bin/', cgis);
 
+app.use(compression());
+
 app.set('view engine', 'pug')
 
-/*app.use(minifyHTML({
+app.use(minifyHTML({
     override:      true,
     exception_url: false,
     htmlMinifier: {
@@ -35,7 +38,7 @@ app.set('view engine', 'pug')
         removeEmptyAttributes:     true,
         minifyJS:                  true
     }
-}));*/
+}));
 
 app.get('/list', page);
 app.get('/album/:id', page);
