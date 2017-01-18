@@ -22,7 +22,6 @@ module.exports = {
             if (!this.uploaded) return;
             var that = this;
             this.$store.dispatch('saveImg', this.$parent.getAdjustInfo()).then(postId => {
-                alert(postId);
                 that.$router.push('/detail/' + postId);
             });
         }
