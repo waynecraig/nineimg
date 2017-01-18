@@ -16,7 +16,7 @@
     
 const Layer = require('./Layer.vue')
 module.exports = {
-    components: { Layer },
+    components: { layer: Layer },
     props: ['layers'],
     methods: {
         onPanStart: function(e) {

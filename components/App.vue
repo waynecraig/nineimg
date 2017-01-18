@@ -11,7 +11,7 @@
 
 const Navbar = require('./Navbar.vue')
 module.exports = {
-    components: { Navbar }
+    components: { navbar: Navbar }
 }
 
 </script>

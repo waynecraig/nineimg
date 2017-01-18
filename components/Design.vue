@@ -11,7 +11,10 @@ const Matrix = require('./Matrix.vue');
 const Opers = require('./Opers.vue');
 const mapState = require('vuex').mapState;
 module.exports = {
-    components: { Matrix, Opers },
+    components: { 
+        matrix: Matrix, 
+        opers: Opers 
+    },
     computed: mapState({
         layers: state => state.board.localId ? [state.board.localId, '/img/qrlayer.png'] : []
     }),
