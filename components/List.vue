@@ -1,5 +1,6 @@
 <template>
     <div class="list" v-on:scroll="onScroll">
+        <div v-if="posts.length === 0">还没有人发动态~</div>
         <div v-for="post in posts" class="post">
             <img class="avatar" v-bind:src="post.headimgurl" v-on:click="toAlbum(post.userId)"/>
             <div class="postdata">
