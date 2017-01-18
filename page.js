@@ -12,7 +12,7 @@ const render = function(req, res) {
         query: req.query
     }));
     res.render('index', {
-        debug: true,
+        debug: config.debug,
         appID: config.appID,
         timestamp: wxconfig.timestamp,
         nonceStr: wxconfig.nonceStr,
