@@ -19,6 +19,7 @@ app.use(cookieParser());
 
 //app.use('/img', express.static('./img'));
 //app.use('/data', express.static('./data'));
+
 app.use('/cgi-bin/', cgis);
 
 app.set('view engine', 'pug')

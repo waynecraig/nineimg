@@ -29,7 +29,7 @@ const page = function(req, res) {
     const opt = {
         domain: 'nineimg.wumap.com',
         expires: new Date(Date.now() + 86400000 * 30),
-        //secure: true
+        secure: true
     }
     account.checkLogin(req).then(info => {
         opt.expires = 0;
