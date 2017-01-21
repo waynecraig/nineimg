@@ -7,8 +7,7 @@ const state = {
 
 // getters
 const getters = {
-    allRecords: state => state.all,
-    maxTime: state => state.all.length ? state.all[state.all.length-1].createTime : undefined
+    allRecords: state => state.all
 }
 
 // actions

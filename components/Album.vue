@@ -62,7 +62,7 @@ module.exports = {
             this.$store.dispatch('fetchPosts', {
                 userId: id,
                 userIds: this.$store.getters.userIds,
-                startTime: this.$store.getters.albumMaxTime
+				startTime: this.posts.length ? this.posts[this.posts.length-1].createTime : undefined
             });
         },
         getDate: function(t) {

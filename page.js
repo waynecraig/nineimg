@@ -6,8 +6,8 @@ const db = require('./lib/db');
 
 const render = function(req, res) {
     const wxconfig = sign(config.jsapi_ticket, url.format({
-        protocol: req.protocol,
-        hostname: req.hostname,
+        protocol: config.protocol,
+        hostname: config.hostname,
         pathname: req.path,
         query: req.query
     }));

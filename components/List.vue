@@ -48,7 +48,7 @@ module.exports = {
         fetchPosts: function() {
             this.$store.dispatch('fetchPosts', {
                 userIds: this.$store.getters.userIds,
-				startTime: this.$store.getters.maxTime
+				startTime: this.posts.length ? this.posts[this.posts.length-1].createTime : undefined
             });
         },
         getTime: function(t) {
