@@ -2,6 +2,7 @@
     <div class="design">
         <matrix :layers="layers" ref="M"/>
         <opers/>
+        <loading v-if="text" :text="text"/>
     </div>
 </template>
 
@@ -9,14 +10,13 @@
 
 const Matrix = require('./Matrix.vue');
 const Opers = require('./Opers.vue');
+const Loading = require('./Loading.vue');
 const mapState = require('vuex').mapState;
 module.exports = {
-    components: { 
-        matrix: Matrix, 
-        opers: Opers 
-    },
+    components: { Matrix, Opers, Loading },
     computed: mapState({
-        layers: state => state.board.localId ? [state.board.localId, '/img/qrlayer.png'] : []
+        layers: state => state.board.localId ? [state.board.localId, '/img/qrlayer.png'] : [],
+        text: state => state.board.uplading ? '上传中...' : state.board.saving ? '保存中...' : ''
     }),
     methods: {
         getAdjustInfo: function() {

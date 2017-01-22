@@ -2,9 +2,13 @@ import * as types from './mutation-types'
 import api from '../api'
 
 export const saveImg  = ({ commit }, options) => {
+    commit(types.START_SAVE);
     return api.saveImg(options).then(post => {
+        commit(types.SAVE_SUCCESS);
         commit(types.RECEIVE_POSTS, [post]);
         return post._id;
+    }).catch(e=>{
+        commit(types.SAVE_FAIL);
     });
 }
 

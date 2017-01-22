@@ -5,7 +5,9 @@ import api from '../../api'
 const state = {
     localId: '',
     serverId: '',
-    uploaded: false
+    uploaded: false,
+    uploading: false,
+    saving: false
 }
 
 // getters
@@ -15,6 +17,7 @@ const getters = {
 // actions
 const actions = {
     uploadImg ({commit}) {
+        commit(types.START_UPLOAD);
         return api.chooseImg().then(localId => {
             commit(types.SET_LOCAL_ID, localId);
             return localId;
@@ -22,7 +25,9 @@ const actions = {
             commit(types.SET_SERVER_ID, serverId);
             return serverId;
         }).then(api.uploadImg).then(() => {
-            commit(types.UPLOAD_IMG);
+            commit(types.UPLOAD_SUCCESS);
+        }).catch(e => {
+            commit(types.UPLOAD_FAIL);
         });
     }
 }
@@ -37,8 +42,24 @@ const mutations = {
     [types.SET_SERVER_ID] (state, id) {
         state.serverId = id;
     },
-    [types.UPLOAD_IMG] (state) {
+    [types.START_UPLOAD] (state) {
+        state.uploading = true;
+    },
+    [types.UPLOAD_SUCCESS] (state) {
+        state.uploading = false;
         state.uploaded = true;
+    },
+    [types.UPLOAD_FAIL] (state) {
+        state.uploading = false;
+    },
+    [types.START_SAVE] (state) {
+        state.saving = true;
+    },
+    [types.SAVE_SUCCESS] (state) {
+        state.saving = false;
+    },
+    [types.SAVE_FAIL] (state) {
+        state.saving = false;
     }
 }
 

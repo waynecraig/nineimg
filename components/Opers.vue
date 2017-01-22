@@ -1,6 +1,6 @@
 <template>
     <div class="opers">
-        <div class="oper" v-on:click="uploadImg">上传</div>
+        <div class="oper" v-on:click="uploadImg">{{uploadText}}</div>
         <div v-bind:class="saveClass" v-on:click="saveImg">保存</div>
     </div>
 </template>
@@ -12,6 +12,7 @@ const mapAction = require('vuex').mapAction;
 module.exports = {
     computed: mapState({
         uploaded: state => state.board.uploaded,
+        uploadText: state => (state.board.uploaded ? '重新' : '') + '上传',
         saveClass: state => "oper" + (state.board.uploaded ? '' : ' disable')
     }),
     methods: {
