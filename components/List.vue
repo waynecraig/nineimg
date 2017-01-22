@@ -45,11 +45,14 @@ module.exports = {
         '$route': 'fetchPosts'
     },
     methods: {
-        fetchPosts: function() {
-            this.$store.dispatch('fetchPosts', {
-                userIds: this.$store.getters.userIds,
-				startTime: this.posts.length ? this.posts[this.posts.length-1].createTime : undefined
-            });
+        fetchPosts: function(isMore) {
+            const options = {
+                userIds: this.$store.getters.userIds
+            }
+            if (isMore) {
+                options.startTime = this.$store.state.posts.maxTime;
+            }
+            this.$store.dispatch('fetchPosts', options);
         },
         getTime: function(t) {
             const d = (Date.now() - t) / 1000;
@@ -92,7 +95,7 @@ module.exports = {
         onScroll: function(e) {
 			var scrollTop = Math.max(window.pageYOffset || 0, document.body.scrollTop);
 			if (document.documentElement.clientHeight + scrollTop >= document.documentElement.scrollHeight - 10) {
-                this.fetchPosts();
+                this.fetchPosts(true);
 			}
         }
     }

@@ -56,14 +56,19 @@ module.exports = {
         '$route': 'fetchPosts'
     },
     methods: {
-        fetchPosts: function() {
+        fetchPosts: function(isMore) {
             const id = this.$route.params.id;
-            this.$store.dispatch('setCurUser', id);
-            this.$store.dispatch('fetchPosts', {
+            const options = {
                 userId: id,
                 userIds: this.$store.getters.userIds,
-				startTime: this.posts.length ? this.posts[this.posts.length-1].createTime : undefined
-            });
+            }
+            if (isMore) {
+                const p = this.posts;
+				options.startTime = p.length ? p[p.length-1].createTime : undefined
+            } else {
+                this.$store.dispatch('setCurUser', id);
+            }
+            this.$store.dispatch('fetchPosts', options);
         },
         getDate: function(t) {
             const d = new Date(t);
@@ -95,7 +100,7 @@ module.exports = {
         onScroll: function(e) {
 			var scrollTop = Math.max(window.pageYOffset || 0, document.body.scrollTop);
 			if (document.documentElement.clientHeight + scrollTop >= document.documentElement.scrollHeight - 10) {
-                this.fetchPosts();
+                this.fetchPosts(true);
 			}
         }
     }
