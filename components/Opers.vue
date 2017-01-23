@@ -1,7 +1,11 @@
 <template>
     <div class="opers">
         <div class="oper" v-on:click="uploadImg">{{uploadText}}</div>
-        <div v-bind:class="saveClass" v-on:click="saveImg">保存</div>
+        <div 
+             v-bind:class="canSave?'oper':'oper disable'" 
+             v-on:click="saveImg"
+             v-on:transitionend="onTransitionEnd"
+         >保存</div>
     </div>
 </template>
 
@@ -9,12 +13,15 @@
 
 const mapState = require('vuex').mapState;
 const mapAction = require('vuex').mapAction;
+const mapGetters = require('vuex').mapGetters;
 module.exports = {
-    computed: mapState({
-        uploaded: state => state.board.uploaded,
-        uploadText: state => (state.board.uploaded ? '重新' : '') + '上传',
-        saveClass: state => "oper" + (state.board.uploaded ? '' : ' disable')
-    }),
+    computed: Object.assign(
+        mapGetters(['canSave']),
+        mapState({
+            uploaded: state => state.board.uploaded,
+            uploadText: state => (state.board.uploaded ? '重新' : '') + '上传',
+        })
+    ),
     methods: {
         uploadImg: function() {
             this.$store.dispatch('uploadImg');
@@ -25,6 +32,9 @@ module.exports = {
             this.$store.dispatch('saveImg', this.$parent.getAdjustInfo()).then(postId => {
                 that.$router.push('/detail/' + postId);
             });
+        },
+        onTransitionEnd: function() {
+            this.$store.dispatch('stopAdjust');
         }
     }
 }

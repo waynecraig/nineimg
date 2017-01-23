@@ -35,7 +35,7 @@ module.exports = {
             for (var i = 0; i < 9; i++) {
                 var c = i % 3;
                 var r = Math.floor(i / 3);
-                s.push({
+                var style = {
                     backgroundImage: 'url(' + this.img + ')',
                     backgroundSize: this.w * scale + 'px ' + this.h * scale + 'px',
                     backgroundPosition: (x - c * d) + 'px ' + (y - r * d) + 'px',
@@ -43,7 +43,11 @@ module.exports = {
                     height: d + 'px',
                     left: c * D + 'px',
                     top: r * D + 'px'
-                });
+                };
+                if (this.adjusting) {
+                    style.transition = 'all 0.5s';
+                }
+                s.push(style);
             }
             return s;
         }
@@ -54,16 +58,23 @@ module.exports = {
                 var p = new Image();
                 var that = this;
                 p.onload = function(){
-                    that.scale = that.W / Math.min(this.width, this.height);
-                    that.w = this.width;
-                    that.h = this.height;
-                    that.x = 0;
-                    that.y = 0;
+                    var scale = that.W / Math.min(this.width, this.height);
+                    if (scale > 1) {
+                        that.$store.dispatch('setInvalidImg');
+                        alert('图片分辨率太低，请选择其他图片');
+                    } else {
+                        that.scale = that._scale = scale;
+                        that.w = this.width;
+                        that.h = this.height;
+                        that.x = 0;
+                        that.y = 0;
+                    }
                 };
                 p.src = this.img;
             }
         },
         onPanStart: function(e) {
+            this.$store.dispatch('startHandle');
             this.deltaX = e.deltaX;
             this.deltaY = e.deltaY;
         },
@@ -76,8 +87,11 @@ module.exports = {
             this.deltaX = 0;
             this.y += this.deltaY;
             this.deltaY = 0;
+            this.adjust();
+            this.$store.dispatch('stopHandle');
         },
         onPinchStart: function(e) {
+            this.$store.dispatch('startHandle');
             this.x -= e.deltaX;
             this.y -= e.deltaY;
             this.onPinchMove(e);
@@ -95,7 +109,29 @@ module.exports = {
             this.deltaX = 0;
             this.y += this.deltaY;
             this.deltaY = 0;
+            this.adjust();
+            this.$store.dispatch('stopHandle');
         },
+        zoomFromCenter: function(scale) {
+            var c = this.W / 2 + this.M;
+            var ds = 1 - scale / this.scale;
+            this.x += ds * (c - this.x);
+            this.y += ds * (c - this.y);
+            this.scale = scale;
+        },
+        adjust: function() {
+            var that = this;
+            [
+                { c: ()=>that.scale>1, u: ()=>that.zoomFromCenter(1) },
+                { c: ()=>that.x>0, u: ()=>that.x=0 },
+                { c: ()=>that.y>0, u: ()=>that.y=0 },
+            ].map(({c, u}) => {
+                if (c()) {
+                    this.$store.dispatch('startAdjust');
+                    u();
+                }
+            });
+        }
     },
     watch: {
         img: function(val, oldVal) {

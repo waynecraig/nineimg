@@ -1,8 +1,8 @@
 <template>
     <div class="design">
+        <loading v-if="text" :text="text"/>
         <matrix :layers="layers" ref="M"/>
         <opers/>
-        <loading v-if="text" :text="text"/>
     </div>
 </template>
 
@@ -16,7 +16,7 @@ module.exports = {
     components: { Matrix, Opers, Loading },
     computed: mapState({
         layers: state => state.board.localId ? [state.board.localId, '/img/qrlayer.png'] : [],
-        text: state => state.board.uplading ? '上传中...' : state.board.saving ? '保存中...' : ''
+        text: state => state.board.uploading ? '上传中...' : (state.board.saving ? '保存中...' : '')
     }),
     methods: {
         getAdjustInfo: function() {

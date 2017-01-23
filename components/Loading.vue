@@ -1,5 +1,5 @@
 <template>
-    <div class="loading">
+    <div class="loading" v-on:touchstart="onTouchStart">
         <div class="message">
             <p>{{text}}</p>
         </div>
@@ -9,7 +9,12 @@
 <script>
 
 module.exports = {
-    props: ['text']
+    props: ['text'],
+    methods: {
+        onTouchStart: function(e) {
+            e.preventDefault();
+        }
+    }
 }
 
 </script>
@@ -17,10 +22,10 @@ module.exports = {
 <style>
 
 .loading {
-    z-index: 10;
+    z-index: 100;
     position: fixed;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 90vh;
     background: rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
