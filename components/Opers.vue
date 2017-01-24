@@ -17,7 +17,6 @@ module.exports = {
     computed: Object.assign(
         mapGetters(['canSave']),
         mapState({
-            uploaded: state => state.board.uploaded,
             uploadText: state => (state.board.uploaded ? '重新' : '') + '上传',
         })
     ),
@@ -26,7 +25,7 @@ module.exports = {
             this.$store.dispatch('uploadImg');
         },
         saveImg: function() {
-            if (!this.uploaded) return;
+            if (!this.canSave) return;
             var that = this;
             this.$store.dispatch('saveImg', this.$parent.getAdjustInfo()).then(postId => {
                 that.$router.push('/detail/' + postId);
