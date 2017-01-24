@@ -9,12 +9,13 @@ const state = {
     uploading: false,
     saving: false,
     handling: false,
-    adjusting: false
+    adjusting: false,
+    saved: false
 }
 
 // getters
 const getters = {
-    canSave: state => state.uploaded && !state.handling && !state.adjusting
+    canSave: state => state.uploaded && !state.handling && !state.adjusting && !state.saved
 }
 
 // actions
@@ -76,6 +77,7 @@ const mutations = {
     },
     [types.SAVE_SUCCESS] (state) {
         state.saving = false;
+        state.saved = true;
     },
     [types.SAVE_FAIL] (state) {
         state.saving = false;
@@ -89,6 +91,7 @@ const mutations = {
     },
     [types.START_HANDLE] (state) {
         state.handling = true;
+        state.saved = false;
     },
     [types.STOP_HANDLE] (state) {
         state.handling = false;
