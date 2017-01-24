@@ -4,7 +4,6 @@
         <div 
              v-bind:class="canSave?'oper':'oper disable'" 
              v-on:click="saveImg"
-             v-on:transitionend="onTransitionEnd"
          >保存</div>
     </div>
 </template>
@@ -32,9 +31,6 @@ module.exports = {
             this.$store.dispatch('saveImg', this.$parent.getAdjustInfo()).then(postId => {
                 that.$router.push('/detail/' + postId);
             });
-        },
-        onTransitionEnd: function() {
-            this.$store.dispatch('stopAdjust');
         }
     }
 }
