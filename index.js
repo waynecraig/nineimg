@@ -50,11 +50,12 @@ app.get('/login', function(req, res){
 const json = app.response.json;
 app.response.json = function(obj) {
     const url = this.req.url;
+    const uid = this.req.cookies && this.req.cookies.id;
     if (obj.code === 0) {
-        log.info('cgi_success', {url})
+        log.info('cgi_success', {url, uid})
     } else {
         log.error('cgi_error', {
-            obj, url, 
+            obj, url, uid,
             stack: obj&&obj.msg&&obj.msg.stack
         })
     }
