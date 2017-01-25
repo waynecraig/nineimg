@@ -4,6 +4,7 @@ const appjs = require('./lib/appjs');
 const cgis = require('./cgis');
 const page = require('./page');
 const url = require('url');
+const log = require('./lib/log');
 
 const express = require('express');
 const app = express();
@@ -44,6 +45,24 @@ app.get('/login', function(req, res){
         hash: 'wechat_redirect'
     });
     res.redirect(u);
+});
+
+const json = app.response.json;
+app.response.json = function(obj) {
+    const url = this.req.url;
+    if (obj.code === 0) {
+        log.info('cgi_success', {url})
+    } else {
+        log.error('cgi_error', {
+            obj, url, 
+            stack: obj&&obj.msg&&obj.msg.stack
+        })
+    }
+    return json.call(this, obj);
+};
+
+process.on('uncaughtException', function (e) {
+    log.error("uncaughtException", {stack: e.stack});
 });
 
 Promise.all([

@@ -30,7 +30,6 @@ module.exports = function(req, res) {
                 res.json({code:0, data});
             });
         }).catch(e=>{
-            console.error(e);
             res.json({code:1, msg:e});
         });
 
@@ -39,7 +38,6 @@ module.exports = function(req, res) {
         if (e === 100) {
             res.json({code: 100, msg: 'no login'});
         } else {
-            console.error(e);
             res.json({code: 2, msg: e});
         }
 

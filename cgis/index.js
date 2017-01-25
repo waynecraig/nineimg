@@ -1,5 +1,6 @@
 "use strict";
 const router = require('express').Router({caseSensitive: true});
+const log = require('../lib/log');
 
 router.use(function(req, res){
 
@@ -15,7 +16,8 @@ router.use(function(req, res){
             }
 
         } catch (e) { 
-            console.error(e.stack);
+            log.error('cgi_exception', {stack: e.stack});
+
             return res.json({code: 1, msg: 'action error'});
         }
 

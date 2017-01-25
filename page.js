@@ -3,6 +3,7 @@ const account = require('./lib/account');
 const sign = require('./lib/sign');
 const url = require('url');
 const db = require('./lib/db');
+const log = require('./lib/log');
 
 const render = function(req, res) {
     const wxconfig = sign(config.jsapi_ticket, url.format({
@@ -21,7 +22,6 @@ const render = function(req, res) {
         appjs: config.appjs
     }, (err, html) => {
         res.send(html);
-        //res.send('<html><head></head><body><div id="test"><my v-bind:text="a"></my></div><script>' + config.appjs + '</script></body></html>');
     });
 }
 
@@ -35,8 +35,10 @@ const page = function(req, res) {
         opt.expires = 0;
         res.cookie('login', 'ok', opt);
         render(req, res);
+        log.info('pv_ok', {userId:info._id});
     }).catch(()=>{
         if (!req.query.state) {
+            log.info('pv_redirect');
             return res.redirect('/login');
         }
         const code = req.query.code;
@@ -47,9 +49,11 @@ const page = function(req, res) {
                 opt.expires = 0;
                 res.cookie('login', 'ok', opt);
                 render(req, res);
+                log.info('pv_new', {userId:info._id});
             });
         } else {
             render(req, res);
+            log.info('pv_reject');
         }
     });
 };
