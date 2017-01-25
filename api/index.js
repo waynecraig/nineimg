@@ -58,3 +58,7 @@ exports.saveImg = function(options) {
 exports.queryPost = function(options) {
     return postRequest('/cgi-bin/queryPosts', options);
 }
+
+exports.deletePost = function(id) {
+    return postRequest('/cgi-bin/deletePost', {id});
+}

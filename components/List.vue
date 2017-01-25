@@ -12,7 +12,10 @@
                         </div>
                     </div>
                 </div>
-                <p class="time">{{getTime(post.createTime)}}</p>
+                <div class="bar">
+                    <span class="time">{{getTime(post.createTime)}}</span>
+                    <span class="delete" v-if="post.userId===me" v-on:click="deletePost(post._id)">删除</span>
+                </div>
             </div>
         </div>
     </div>
@@ -20,6 +23,7 @@
 
 <script>
 
+const mapState = require('vuex').mapState;
 const mapGetters = require('vuex').mapGetters;
 const ResMixin = require('./ResMixin.vue');
 const formatDate = require('../lib/formatDate');
@@ -31,9 +35,11 @@ module.exports = {
             M: window.innerWidth * 0.01,
         }
     },
-    computed: mapGetters({
+    computed: Object.assign(mapState({
+        me: state => state.users.me
+    }),mapGetters({
         posts: 'listData'
-    }),
+    })),
     created: function() {
         this.fetchPosts();
         window.addEventListener('scroll', this.onScroll);
@@ -97,6 +103,12 @@ module.exports = {
 			if (document.documentElement.clientHeight + scrollTop >= document.documentElement.scrollHeight - 10) {
                 this.fetchPosts(true);
 			}
+        },
+        deletePost: function(id) {
+            const sure = confirm('确定要删除这条记录?');
+            if (sure) {
+                this.$store.dispatch('deletePost', id);
+            }
         }
     }
 }
@@ -130,9 +142,19 @@ module.exports = {
     border: 0;
 }
 
-.list .post .time {
+.list .post .bar {
+    margin-top: 5px;
+}
+
+.list .post .bar .time {
     font-size: 12px;
     color: #666;
+}
+
+.list .post .bar .delete {
+    font-size: 12px;
+    color: blue;
+    float: right;
 }
 
 .list .empty {

@@ -1,9 +1,11 @@
 import * as types from '../mutation-types'
+import api from '../../api'
 
 // initial state
 const state = {
     all: [],
-    maxTime: undefined
+    maxTime: undefined,
+    deleting: false
 }
 
 // getters
@@ -13,6 +15,17 @@ const getters = {
 
 // actions
 const actions = {
+    deletePost: ({commit}, id) => {
+        commit(types.START_DELETE);
+        return api.deletePost(id)
+        .then(()=>{
+            commit(types.DELETE_SUCCESS, id)
+            alert('删除成功');
+        }).catch(e=>{
+            commit(types.DELETE_FAIL)
+            alert('删除失败');
+        });
+    }
 }
 
 // mutations
@@ -23,7 +36,17 @@ const mutations = {
     },
     [types.SET_MAX_TIME] (state, maxTime) {
         state.maxTime = maxTime;
-    }
+    },
+    [types.START_DELETE] (state) {
+        state.deleting = true;
+    },
+    [types.DELETE_SUCCESS] (state, id) {
+        state.deleting = false;
+        state.all = state.all.filter(d=>d._id!==id);
+    },
+    [types.DELETE_FAIL] (state) {
+        state.deleting = false;
+    },
 }
 
 export default {
