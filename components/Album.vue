@@ -16,8 +16,8 @@
                 </p>
                 <div class="matrix">
                     <div class="layer">
-                        <div v-for="j in 4" class="cell" v-bind:style="styles[j-1]">
-                            <img v-if="post" v-bind:src="imgurl(post, j)" v-on:click="preview(post, j)"/>
+                        <div v-for="j in 4" class="cell" v-bind:style="cellStyle(post,j)">
+                            <img v-if="post.exposed" v-bind:src="imgurl(post, j)" v-on:click="preview(post, j)"/>
                         </div>
                     </div>
                 </div>

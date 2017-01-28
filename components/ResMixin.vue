@@ -1,27 +1,28 @@
 <script>
 module.exports = {
-    computed: {
-		styles: function() {
+    methods: {
+        cellStyle: function(p, i) {
             const s = [];
             const W = this.W || window.innerWidth * 0.94;
             const M = this.M ||  window.innerWidth * 0.01;
             const N = this.N || 3;
             const d  = W / N;
             const D = d + M;
-            for (var i = 0; i < (N*N); i++) {
-                const c = i % N;
-                const r = Math.floor(i / N);
-                s.push({
-                    width: d + 'px',
-                    height: d + 'px',
-                    left: c * D + 'px',
-                    top: r * D + 'px'
-                });
-            }
+            const c = (i-1) % N;
+            const r = Math.floor((i-1) / N);
+            s.push({
+                width: d + 'px',
+                height: d + 'px',
+                left: c * D + 'px',
+                top: r * D + 'px',
+                backgroundImage: 'url(' + this.burl(p, i) + ')',
+                backgroundSize: '100% 100%'
+            });
             return s;
-        }
-    },
-    methods: {
+        },
+        burl: function(p, i) {
+            return '/thumb/' + p.serverId + '/' + p.buildId + '/' + i + '.png';
+        },
         imgurl: function(p, i) {
             return '/data/' + p.serverId + '/' + p.buildId + '/' + i + '.png';
         },

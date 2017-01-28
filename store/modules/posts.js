@@ -5,7 +5,8 @@ import api from '../../api'
 const state = {
     all: [],
     maxTime: undefined,
-    deleting: false
+    deleting: false,
+    expose: {}
 }
 
 // getters
@@ -25,6 +26,9 @@ const actions = {
             commit(types.DELETE_FAIL)
             alert('删除失败');
         });
+    },
+    setExpose: ({commit}, id) => {
+        commit(types.SET_EXPOSE, id);
     }
 }
 
@@ -46,6 +50,10 @@ const mutations = {
     },
     [types.DELETE_FAIL] (state) {
         state.deleting = false;
+    },
+    [types.SET_EXPOSE] (state, id) {
+        state.expose[id] = true;
+        state.expose = Object.assign({}, state.expose);
     },
 }
 

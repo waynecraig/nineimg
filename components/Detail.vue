@@ -2,7 +2,7 @@
     <div class="detail">
         <div class="matrix">
             <div class="layer">
-                <div v-for="i in 9" class="cell" v-bind:style="styles[i-1]">
+                <div v-for="i in 9" class="cell" v-bind:style="cellStyle(post,i)">
                     <img v-if="post" v-bind:src="imgurl(post, i)" v-on:click="preview(post, i)"/>
                     <p v-if="!post">loading...</p>
                 </div>

@@ -1,14 +1,19 @@
 <template>
-    <div class="list" v-on:scroll="onScroll">
+    <div class="list">
         <div class="empty" v-if="posts.length === 0">还没有人发动态~</div>
         <div v-for="post in posts" class="post">
             <img class="avatar" v-bind:src="post.headimgurl" v-on:click="toAlbum(post.userId)"/>
             <div class="postdata">
                 <p class="name" v-on:click="toAlbum(post.userId)">{{post.nickname}}</p>
-                <div class="matrix">
+                <div class="matrix" ref="M">
                     <div class="layer">
-                        <div v-for="i in 9" class="cell" v-bind:style="styles[i-1]">
-                            <img v-if="post" v-bind:src="imgurl(post, i)" v-on:click="preview(post, i)"/>
+                        <div 
+                            v-for="i in 9" 
+                            class="cell" 
+                            v-bind:style="cellStyle(post,i)"
+                            v-on:click="preview(post, i)"
+                        >
+                            <img v-if="post.exposed" v-bind:src="imgurl(post, i)"/>
                         </div>
                     </div>
                 </div>
@@ -39,10 +44,16 @@ module.exports = {
         me: state => state.users.me
     }),mapGetters({
         posts: 'listData'
-    })),
+    }),{
+        H: function() {
+            return this.W + this.M * 2 + window.innerWidth * 0.09 + 45;
+        }
+    }),
     created: function() {
         this.fetchPosts();
         window.addEventListener('scroll', this.onScroll);
+        var that = this;
+        setTimeout(function(){that.expose()}, 500);
     },
     destroyed: function() {
         window.removeEventListener('scroll', this.onScroll);
@@ -103,11 +114,22 @@ module.exports = {
 			if (document.documentElement.clientHeight + scrollTop >= document.documentElement.scrollHeight - 10) {
                 this.fetchPosts(true);
 			}
+            this.expose();
         },
         deletePost: function(id) {
             const sure = confirm('确定要删除这条记录?');
             if (sure) {
                 this.$store.dispatch('deletePost', id);
+            }
+        },
+        expose: function() {
+			var scrollTop = Math.max(window.pageYOffset || 0, document.body.scrollTop);
+            var i1 = Math.floor(scrollTop / this.H);
+            var i2 = Math.ceil((scrollTop + document.documentElement.clientHeight) / this.H);
+            for (var i = i1; i < i2; i++) {
+                if (i < this.posts.length) {
+                    this.$store.dispatch('setExpose', this.posts[i]._id);
+                }
             }
         }
     }
@@ -144,15 +166,16 @@ module.exports = {
 
 .list .post .bar {
     margin-top: 5px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
 }
 
 .list .post .bar .time {
-    font-size: 12px;
     color: #666;
 }
 
 .list .post .bar .delete {
-    font-size: 12px;
     color: blue;
     float: right;
 }

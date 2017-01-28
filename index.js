@@ -18,8 +18,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser());
 
-app.use('/img', express.static('./img'));
-app.use('/data', express.static('./data'));
+//app.use('/img', express.static('./img'));
+//app.use('/data', express.static('./data'));
+//app.use('/thumb', express.static('./thumb'));
 
 app.use('/cgi-bin/', cgis);
 

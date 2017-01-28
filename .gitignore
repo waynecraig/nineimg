@@ -4,6 +4,7 @@ node_modules
 upload
 tmp
 data
+thumb
 anyproxy.rule.js
 output
 webpack.config.js
